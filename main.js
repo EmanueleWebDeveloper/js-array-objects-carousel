@@ -27,11 +27,62 @@
 // - url dell’immagine
 //  - titolo
 //  - descrizione
+
+const arrowDownHtml = document.querySelector('.fa-chevron-down');
+const arrowUpHtml = document.querySelector('.fa-chevron-up');
+
+const figureHtml = document.querySelector('figure');
+
+console.log(figureHtml);
+
 const carosello = [
-    { urlImmagine: "./img/Teatro_Massimo.jpg", titolo: "Teatro Massimo", descrizione: "Description for Teatro Massimo" },
-    { urlImmagine: "./img/cattedrale.jpg", titolo: "Cattedrale", descrizione: "Description for Cattedrale" },
-    { urlImmagine: "./img/piazza_vergogna.jpg", titolo: "Piazza Vergogna", descrizione: "Description for Piazza Vergogna" },
-    { urlImmagine: "./img/politeama.jpg", titolo: "Politeama", descrizione: "Description for Politeama" },
-    { urlImmagine: "./img/zen.jpg", titolo: "Zen", descrizione: "Description for Zen" }
+    { urlImmagine: "./img/Teatro_Massimo.jpg", titolo: "Teatro Massimo", descrizione: "Descrizione per il Teatro Massimo" },
+    { urlImmagine: "./img/cattedrale.jpg", titolo: "Cattedrale", descrizione: "Descrizione per la Cattedrale" },
+    { urlImmagine: "./img/piazza vergogna.jpg", titolo: "Piazza Vergogna", descrizione: "Descrizione per la Piazza Vergogna" },
+    { urlImmagine: "./img/politeama.jpg", titolo: "Politeama", descrizione: "Descrizione per il Politeama" },
+    { urlImmagine: "./img/Mondello.jpg", titolo: "Mondello", descrizione: "Descrizione per lo Zen" }
 ];
 
+for (let i = 0; i < carosello.length; i++) {
+    if (i === 0) {
+        figureHtml.innerHTML += `
+            <img class="active" src="${carosello[i].urlImmagine}" alt="immagini carosello">
+        `;
+    } else {
+        figureHtml.innerHTML += `
+            <img src="${carosello[i].urlImmagine}" alt="immagini carosello">
+        `;
+    }
+}
+
+let immagineCorrente = 0;
+
+arrowUpHtml.addEventListener("click", function () {
+    let arrayTagsImmagini = document.querySelectorAll('figure img');
+    console.log(arrayTagsImmagini);
+
+    arrayTagsImmagini[immagineCorrente].classList.remove('active');
+
+    if (immagineCorrente == 0) {
+        immagineCorrente = arrayTagsImmagini.length - 1;
+    } else {
+        immagineCorrente--;
+    }
+
+    arrayTagsImmagini[immagineCorrente].classList.add('active');
+});
+
+arrowDownHtml.addEventListener("click", function () {
+    let arrayTagsImmagini = document.querySelectorAll('figure img');
+    console.log(arrayTagsImmagini);
+
+    arrayTagsImmagini[immagineCorrente].classList.remove('active');
+
+    if (immagineCorrente == arrayTagsImmagini.length - 1) {
+        immagineCorrente = 0;
+    } else {
+        immagineCorrente++;
+    }
+
+    arrayTagsImmagini[immagineCorrente].classList.add('active');
+});
