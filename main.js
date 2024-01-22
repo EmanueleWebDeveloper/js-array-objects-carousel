@@ -30,10 +30,8 @@
 
 const arrowDownHtml = document.querySelector('.fa-chevron-down');
 const arrowUpHtml = document.querySelector('.fa-chevron-up');
-
 const figureHtml = document.querySelector('figure');
-
-console.log(figureHtml);
+const previewContainer = document.getElementById('preview-container');
 
 const carosello = [
     { urlImmagine: "./img/Teatro_Massimo.jpg", titolo: "Teatro Massimo", descrizione: "Descrizione per il Teatro Massimo" },
@@ -43,46 +41,27 @@ const carosello = [
     { urlImmagine: "./img/Mondello.jpg", titolo: "Mondello", descrizione: "Descrizione per lo Zen" }
 ];
 
+// carosello
 for (let i = 0; i < carosello.length; i++) {
     if (i === 0) {
-        figureHtml.innerHTML += `
-            <img class="active" src="${carosello[i].urlImmagine}" alt="immagini carosello">
-        `;
+        figureHtml.innerHTML += `<img class="active" src="${carosello[i].urlImmagine}" alt="immagini carosello">`;
     } else {
-        figureHtml.innerHTML += `
-            <img src="${carosello[i].urlImmagine}" alt="immagini carosello">
-        `;
+        figureHtml.innerHTML += `<img src="${carosello[i].urlImmagine}" alt="immagini carosello">`;
     }
+}
+
+for (let i = 0; i < carosello.length; i++) {
+    previewContainer.innerHTML += `<img class="preview" src="${carosello[i].urlImmagine}" alt="preview carosello">`;
 }
 
 let immagineCorrente = 0;
 
 arrowUpHtml.addEventListener("click", function () {
-    let arrayTagsImmagini = document.querySelectorAll('figure img');
-    console.log(arrayTagsImmagini);
-
-    arrayTagsImmagini[immagineCorrente].classList.remove('active');
-
-    if (immagineCorrente == 0) {
-        immagineCorrente = arrayTagsImmagini.length - 1;
-    } else {
-        immagineCorrente--;
-    }
-
-    arrayTagsImmagini[immagineCorrente].classList.add('active');
+    updateCarousel(-1);
 });
 
+//
 arrowDownHtml.addEventListener("click", function () {
-    let arrayTagsImmagini = document.querySelectorAll('figure img');
-    console.log(arrayTagsImmagini);
-
-    arrayTagsImmagini[immagineCorrente].classList.remove('active');
-
-    if (immagineCorrente == arrayTagsImmagini.length - 1) {
-        immagineCorrente = 0;
-    } else {
-        immagineCorrente++;
-    }
-
-    arrayTagsImmagini[immagineCorrente].classList.add('active');
+    updateCarousel(1);
 });
+
