@@ -32,6 +32,9 @@ const arrowDownHtml = document.querySelector('.fa-chevron-down');
 const arrowUpHtml = document.querySelector('.fa-chevron-up');
 const figureHtml = document.querySelector('figure');
 const previewContainer = document.getElementById('preview-container');
+const startButton = document.getElementById('start-button');
+const stopButton = document.getElementById('stop-button');
+const reverseButton = document.getElementById('reverse-button');
 
 const carosello = [
     { urlImmagine: "./img/Teatro_Massimo.jpg", titolo: "Teatro Massimo", descrizione: "Descrizione per il Teatro Massimo" },
@@ -41,7 +44,66 @@ const carosello = [
     { urlImmagine: "./img/Mondello.jpg", titolo: "Mondello", descrizione: "Descrizione per lo Zen" }
 ];
 
-// carosello
+let immagineCorrente = 0;
+let autoplayInterval;
+
+// Funzione per aggiornare il carosello
+function updateCarousel(direzione) {
+    let arrayTagsImmagini = document.querySelectorAll('figure img');
+    arrayTagsImmagini[immagineCorrente].classList.remove('active');
+
+    immagineCorrente = (immagineCorrente + direzione + arrayTagsImmagini.length) % arrayTagsImmagini.length;
+
+    arrayTagsImmagini[immagineCorrente].classList.add('active');
+
+    updatePreviews();
+}
+
+// Funzione per avviare l'autoplay
+function startAutoplay() {
+    autoplayInterval = setInterval(() => {
+        updateCarousel(1); 
+    }, 3000); 
+
+    arrowUpHtml.removeEventListener("click", arrowUpClickHandler);
+    arrowDownHtml.removeEventListener("click", arrowDownClickHandler);
+}
+
+// Funzione per fermare l'autoplay
+function stopAutoplay() {
+    clearInterval(autoplayInterval);
+
+    arrowUpHtml.addEventListener("click", arrowUpClickHandler);
+    arrowDownHtml.addEventListener("click", arrowDownClickHandler);
+}
+
+
+const arrowUpClickHandler = function () {
+    updateCarousel(-1);
+};
+
+const arrowDownClickHandler = function () {
+    updateCarousel(1);
+};
+
+arrowUpHtml.addEventListener("click", arrowUpClickHandler);
+arrowDownHtml.addEventListener("click", arrowDownClickHandler);
+
+// Aggiungi gestori per i pulsanti di start/stop e di inversione
+startButton.addEventListener('click', startAutoplay);
+stopButton.addEventListener('click', stopAutoplay);
+reverseButton.addEventListener('click', () => updateCarousel(-1));
+
+// Funzione per aggiornare le immagini di preview
+function updatePreviews() {
+    let previewImages = document.querySelectorAll('#preview-container img');
+
+    previewImages.forEach(img => img.classList.remove('preview-active'));
+
+    previewImages[immagineCorrente].classList.add('preview-active');
+}
+
+// Inizializza il carosello
 for (let i = 0; i < carosello.length; i++) {
     if (i === 0) {
         figureHtml.innerHTML += `<img class="active" src="${carosello[i].urlImmagine}" alt="immagini carosello">`;
@@ -54,14 +116,4 @@ for (let i = 0; i < carosello.length; i++) {
     previewContainer.innerHTML += `<img class="preview" src="${carosello[i].urlImmagine}" alt="preview carosello">`;
 }
 
-let immagineCorrente = 0;
-
-arrowUpHtml.addEventListener("click", function () {
-    updateCarousel(-1);
-});
-
-//
-arrowDownHtml.addEventListener("click", function () {
-    updateCarousel(1);
-});
 
